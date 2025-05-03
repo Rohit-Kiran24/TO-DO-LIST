@@ -1,37 +1,57 @@
 {% extends 'base.html'%}
 
 {% block head %}
-<title>Task Smash</title>
+<title>Task Smash - Modern To-Do List Application</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<meta name="description" content="A modern, responsive To-Do List application built with Flask and SQLAlchemy">
 {% endblock %}
+
 {% block body %}
 <div class="content">
-    <h1>Task Smash</h1>
+    <header>
+        <h1>Task Smash</h1>
+        <p class="subtitle">Organize your tasks with style and efficiency</p>
+    </header>
 
-    {%if tasks | length < 1%}
-    <h3> there are no tasks </h3>
-    {% else %}
-    <table>
-        <tr>
-            <th>Task</th>
-            <th>Added</th>
-            <th>Actions</th>
-        </tr>
-        {%  for task in tasks %}
-        <tr>
-            <td>{{task.content}}</td>
-            <td>{{task.created.strftime("%Y-%m-%d")}}</td>
-            <td>
-                <a href="/delete/{{task.id}}">delete</a>
-                <br/>
-                <a href="/edit/{{task.id}}">Edit</a>
-            </td>
-        </tr> 
-        {%endfor%}
-    </table>
-    {% endif%}
-    <form action="/"method="POST">
-        <input type="text"name="content"id="content">
-        <input type="submit"value="Add_text"id=btn_add>
-    </form>
+    <main>
+        {%if tasks | length < 1%}
+        <h3>No tasks yet. Start by adding one below!</h3>
+        {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Added</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{task.content}}</td>
+                    <td>{{task.created.strftime("%Y-%m-%d")}}</td>
+                    <td class="actions">
+                        <a href="/delete/{{task.id}}" title="Delete" class="delete-btn">
+                            <i class="fa fa-trash"></i> Delete
+                        </a>
+                        <a href="/edit/{{task.id}}" title="Edit" class="edit-btn">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                    </td>
+                </tr> 
+                {%endfor%}
+            </tbody>
+        </table>
+        {% endif%}
+        
+        <form action="/" method="POST" class="add-task-form">
+            <input type="text" name="content" id="content" placeholder="Add a new task..." required>
+            <input type="submit" value="Add Task" id="btn_add">
+        </form>
+    </main>
+
+    <footer>
+        <p>Built with <i class="fa fa-heart"></i> using Flask and SQLAlchemy</p>
+    </footer>
 </div>
 {% endblock%} 
